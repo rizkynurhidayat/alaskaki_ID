@@ -60,6 +60,7 @@
 
     <!-- Summary Box -->
     <div class="grid grid-cols-2 gap-6 mb-8">
+        @if($user->role === 'superadmin')
         <div class="border border-slate-200 rounded-xl p-4">
             <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Ringkasan Pendapatan</h4>
             <div class="space-y-1 text-sm">
@@ -99,6 +100,26 @@
                 </div>
             </div>
         </div>
+        @else
+        <!-- Investor Mode Summary Box -->
+        <div class="border border-slate-200 rounded-xl p-4 col-span-2">
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Ringkasan Laba & Dividen</h4>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div class="bg-slate-50 p-3 rounded-lg">
+                    <span class="text-xs text-slate-500 block mb-1">Total Pemasukan</span>
+                    <span class="font-bold text-slate-800">Rp {{ number_format($totalIncome, 0, ',', '.') }}</span>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-lg">
+                    <span class="text-xs text-slate-500 block mb-1">Laba Kotor</span>
+                    <span class="font-bold text-slate-800">Rp {{ number_format($grossProfit, 0, ',', '.') }}</span>
+                </div>
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 font-bold">
+                    <span class="text-xs text-blue-600 block mb-1">Dividen Investor ({{ $investorSharePercentage }}%)</span>
+                    <span class="font-bold text-blue-700">Rp {{ number_format($estimatedDividend, 0, ',', '.') }}</span>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- Table of Transactions -->

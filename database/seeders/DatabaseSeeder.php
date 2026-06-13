@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin Keuangan',
             'email' => 'admin@alaskaki.id',
             'password' => Hash::make('password'),
-            'role' => 'admin'
+            'role' => 'superadmin'
         ]);
 
         // Create Investor User

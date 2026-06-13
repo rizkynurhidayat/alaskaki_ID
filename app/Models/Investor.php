@@ -10,4 +10,9 @@ class Investor extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'name', 'share_percentage'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -12,7 +12,8 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        abort_if(Auth::user()->role !== 'admin', 403, 'Akses Ditolak: Hanya Admin yang dapat mengakses menu Laporan.');
+        $user = Auth::user();
+        abort_if(!in_array($user->role, ['superadmin', 'investor']), 403, 'Akses Ditolak: Anda tidak memiliki wewenang.');
 
         $rangeType = $request->get('range_type', 'monthly');
         $startDate = null;
@@ -32,34 +33,48 @@ class ReportController extends Controller
             $endDate = $request->get('end_date', Carbon::now()->endOfMonth()->format('Y-m-d'));
         }
 
-        $transactions = Transaction::whereBetween('transaction_date', [$startDate, $endDate])
+        $allTransactions = Transaction::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'asc')
             ->get();
 
         // Calculate summary statistics
-        $totalIncome = $transactions->where('type', 'income')->sum('amount');
-        $totalExpense = $transactions->where('type', 'expense')->sum('amount');
-        $totalHpp = $transactions->where('type', 'expense')->where('category', 'hpp')->sum('amount');
+        $totalIncome = $allTransactions->where('type', 'income')->sum('amount');
+        $totalExpense = $allTransactions->where('type', 'expense')->sum('amount');
+        $totalHpp = $allTransactions->where('type', 'expense')->where('category', 'hpp')->sum('amount');
         $totalOperational = $totalExpense - $totalHpp;
 
         $grossProfit = $totalIncome - $totalHpp;
         $netProfit = $totalIncome - $totalExpense;
 
         // Fetch investor share percentage
-        $investor = Investor::first();
-        $investorSharePercentage = $investor ? $investor->share_percentage : 30.00;
+        if ($user->role === 'investor') {
+            $investor = Investor::where('user_id', $user->id)->first();
+            $investorSharePercentage = $investor ? $investor->share_percentage : 0;
+        } else {
+            $investor = Investor::first();
+            $investorSharePercentage = $investor ? $investor->share_percentage : 30.00;
+        }
+        
         $estimatedDividend = ($grossProfit > 0) ? ($grossProfit * ($investorSharePercentage / 100)) : 0;
+
+        // Filter transactions for table display: investor can ONLY see income transactions
+        if ($user->role === 'investor') {
+            $transactions = $allTransactions->where('type', 'income');
+        } else {
+            $transactions = $allTransactions;
+        }
 
         return view('reports.index', compact(
             'transactions', 'totalIncome', 'totalExpense', 'totalHpp', 'totalOperational',
             'grossProfit', 'netProfit', 'estimatedDividend', 'investorSharePercentage',
-            'rangeType', 'startDate', 'endDate'
+            'rangeType', 'startDate', 'endDate', 'user'
         ));
     }
 
     public function print(Request $request)
     {
-        abort_if(Auth::user()->role !== 'admin', 403);
+        $user = Auth::user();
+        abort_if(!in_array($user->role, ['superadmin', 'investor']), 403);
 
         $startDate = $request->get('start_date');
         $endDate = $request->get('end_date');
@@ -69,26 +84,40 @@ class ReportController extends Controller
             return redirect()->route('reports.index')->with('error', 'Rentang tanggal tidak valid untuk cetak PDF.');
         }
 
-        $transactions = Transaction::whereBetween('transaction_date', [$startDate, $endDate])
+        $allTransactions = Transaction::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'asc')
             ->get();
 
-        $totalIncome = $transactions->where('type', 'income')->sum('amount');
-        $totalExpense = $transactions->where('type', 'expense')->sum('amount');
-        $totalHpp = $transactions->where('type', 'expense')->where('category', 'hpp')->sum('amount');
+        $totalIncome = $allTransactions->where('type', 'income')->sum('amount');
+        $totalExpense = $allTransactions->where('type', 'expense')->sum('amount');
+        $totalHpp = $allTransactions->where('type', 'expense')->where('category', 'hpp')->sum('amount');
         $totalOperational = $totalExpense - $totalHpp;
 
         $grossProfit = $totalIncome - $totalHpp;
         $netProfit = $totalIncome - $totalExpense;
 
-        $investor = Investor::first();
-        $investorSharePercentage = $investor ? $investor->share_percentage : 30.00;
+        // Fetch investor share percentage
+        if ($user->role === 'investor') {
+            $investor = Investor::where('user_id', $user->id)->first();
+            $investorSharePercentage = $investor ? $investor->share_percentage : 0;
+        } else {
+            $investor = Investor::first();
+            $investorSharePercentage = $investor ? $investor->share_percentage : 30.00;
+        }
+        
         $estimatedDividend = ($grossProfit > 0) ? ($grossProfit * ($investorSharePercentage / 100)) : 0;
+
+        // Filter transactions for table display: investor can ONLY see income transactions
+        if ($user->role === 'investor') {
+            $transactions = $allTransactions->where('type', 'income');
+        } else {
+            $transactions = $allTransactions;
+        }
 
         return view('reports.print', compact(
             'transactions', 'totalIncome', 'totalExpense', 'totalHpp', 'totalOperational',
             'grossProfit', 'netProfit', 'estimatedDividend', 'investorSharePercentage',
-            'startDate', 'endDate'
+            'startDate', 'endDate', 'user'
         ));
     }
 }

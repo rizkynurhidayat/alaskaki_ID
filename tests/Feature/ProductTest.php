@@ -20,8 +20,8 @@ test('investor users cannot create products', function () {
     ])->assertStatus(403);
 });
 
-test('admin users can access products index', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can access products index', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     Product::create(['name' => 'Deep Clean', 'price' => 50000]);
 
     $this->actingAs($user)->get(route('products.index'))
@@ -30,8 +30,8 @@ test('admin users can access products index', function () {
         ->assertSee('Rp 50.000');
 });
 
-test('admin users can create a product', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can create a product', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
 
     $response = $this->actingAs($user)->post(route('products.store'), [
         'name' => 'Unyellowing',
@@ -45,8 +45,8 @@ test('admin users can create a product', function () {
     ]);
 });
 
-test('admin users can update a product', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can update a product', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     $product = Product::create(['name' => 'Old Jasa', 'price' => 30000]);
 
     $response = $this->actingAs($user)->put(route('products.update', $product), [
@@ -62,8 +62,8 @@ test('admin users can update a product', function () {
     ]);
 });
 
-test('admin users can delete a product', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can delete a product', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     $product = Product::create(['name' => 'Trash Jasa', 'price' => 10000]);
 
     $response = $this->actingAs($user)->delete(route('products.destroy', $product));

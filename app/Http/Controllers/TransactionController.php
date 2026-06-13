@@ -12,8 +12,8 @@ class TransactionController extends Controller
     // 0. Menampilkan riwayat transaksi
     public function index()
     {
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Akses Ditolak: Hanya Admin yang dapat melihat riwayat transaksi.');
+        if (Auth::user()->role !== 'superadmin') {
+            abort(403, 'Akses Ditolak: Hanya Superadmin yang dapat melihat riwayat transaksi.');
         }
 
         $transactions = Transaction::orderBy('transaction_date', 'desc')->paginate(15);
@@ -23,9 +23,9 @@ class TransactionController extends Controller
     // 1. Menampilkan form input
     public function create()
     {
-        // Proteksi tingkat controller: hanya admin yang diizinkan
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Akses Ditolak: Hanya Admin yang dapat menambahkan transaksi.');
+        // Proteksi tingkat controller: hanya superadmin yang diizinkan
+        if (Auth::user()->role !== 'superadmin') {
+            abort(403, 'Akses Ditolak: Hanya Superadmin yang dapat menambahkan transaksi.');
         }
 
         $products = Product::orderBy('name', 'asc')->get();
@@ -36,7 +36,7 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         // Proteksi
-        if (Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'superadmin') {
             abort(403);
         }
 
@@ -67,8 +67,8 @@ class TransactionController extends Controller
     // 3. Menampilkan form edit transaksi
     public function edit(Transaction $transaction)
     {
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Akses Ditolak: Hanya Admin yang dapat mengedit transaksi.');
+        if (Auth::user()->role !== 'superadmin') {
+            abort(403, 'Akses Ditolak: Hanya Superadmin yang dapat mengedit transaksi.');
         }
 
         $products = Product::orderBy('name', 'asc')->get();
@@ -78,7 +78,7 @@ class TransactionController extends Controller
     // 4. Memperbarui data transaksi di database
     public function update(Request $request, Transaction $transaction)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'superadmin') {
             abort(403);
         }
 
@@ -106,7 +106,7 @@ class TransactionController extends Controller
     // 5. Menghapus transaksi dari database
     public function destroy(Transaction $transaction)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'superadmin') {
             abort(403);
         }
 

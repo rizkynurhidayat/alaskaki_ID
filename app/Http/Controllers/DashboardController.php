@@ -34,7 +34,7 @@ class DashboardController extends Controller
         // Laba Bersih = Pemasukan - Pengeluaran (HPP + Operasional)
         $netProfit = $totalIncome - $totalExpense;
         
-        $investorSharePercentage = 30; // Persentase default jika admin yang lihat
+        $investorSharePercentage = 30; // Persentase default jika superadmin yang lihat
         
         if ($user->role === 'investor') {
             $investor = Investor::where('user_id', $user->id)->first();

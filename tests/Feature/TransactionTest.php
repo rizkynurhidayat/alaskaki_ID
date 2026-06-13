@@ -41,8 +41,8 @@ test('investor users cannot store a transaction', function () {
     $response->assertStatus(403);
 });
 
-test('admin users can access create page', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can access create page', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
 
     $response = $this->actingAs($user)->get(route('transactions.create'));
 
@@ -50,8 +50,8 @@ test('admin users can access create page', function () {
         ->assertSee('Tambah Transaksi Baru');
 });
 
-test('admin users can store a transaction', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can store a transaction', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
 
     $response = $this->actingAs($user)->post(route('transactions.store'), [
         'type' => 'income',
@@ -71,7 +71,7 @@ test('admin users can store a transaction', function () {
 });
 
 test('transaction storing validates inputs', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+    $user = User::factory()->create(['role' => 'superadmin']);
 
     $response = $this->actingAs($user)->post(route('transactions.store'), [
         'type' => 'invalid_type',
@@ -130,8 +130,8 @@ test('investor users cannot delete a transaction', function () {
     $response->assertStatus(403);
 });
 
-test('admin users can access edit transaction page', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can access edit transaction page', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     $transaction = Transaction::create([
         'type' => 'income',
         'amount' => 50000,
@@ -145,8 +145,8 @@ test('admin users can access edit transaction page', function () {
         ->assertSee('Ubah Transaksi');
 });
 
-test('admin users can update a transaction', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can update a transaction', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     $transaction = Transaction::create([
         'type' => 'income',
         'amount' => 50000,
@@ -172,8 +172,8 @@ test('admin users can update a transaction', function () {
     ]);
 });
 
-test('admin users can delete a transaction', function () {
-    $user = User::factory()->create(['role' => 'admin']);
+test('superadmin users can delete a transaction', function () {
+    $user = User::factory()->create(['role' => 'superadmin']);
     $transaction = Transaction::create([
         'type' => 'income',
         'amount' => 50000,

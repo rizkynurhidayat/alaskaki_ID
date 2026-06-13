@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    @if($user->role === 'admin')
+    @if($user->role === 'superadmin')
     <!-- Card 2 -->
     <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-red-50 rounded-full group-hover:scale-110 transition-transform"></div>
@@ -97,7 +97,7 @@
                 <p class="text-sm text-slate-500">Belum ada transaksi.</p>
             @endforelse
         </div>
-        @if($user->role === 'admin')
+        @if($user->role === 'superadmin')
         <a href="{{ route('transactions.create') }}" class="block text-center mt-4 w-full py-2 border border-dashed border-slate-300 text-slate-500 rounded-lg hover:bg-slate-50 hover:text-slate-700 transition-colors text-sm font-medium">
             + Tambah Transaksi
         </a>
@@ -112,7 +112,7 @@
     
     const userRole = '{{ $user->role }}';
     
-    if (userRole === 'admin') {
+    if (userRole === 'superadmin') {
         new Chart(ctx, {
             type: 'pie',
             data: {

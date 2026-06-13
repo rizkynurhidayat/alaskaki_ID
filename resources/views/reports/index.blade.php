@@ -66,7 +66,9 @@
             <div class="relative">
                 <p class="text-sm font-medium text-slate-500 mb-1">Laba Kotor</p>
                 <h3 class="text-2xl font-bold text-slate-800">Rp {{ number_format($grossProfit, 0, ',', '.') }}</h3>
+                @if($user->role === 'superadmin')
                 <span class="text-xs text-slate-400 mt-1 block">HPP Belanja: Rp {{ number_format($totalHpp, 0, ',', '.') }}</span>
+                @endif
             </div>
         </div>
 
@@ -81,6 +83,7 @@
         </div>
     </div>
 
+    @if($user->role === 'superadmin')
     <!-- Laba Bersih Card -->
     <div class="bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -93,6 +96,7 @@
             <p>Total Pengeluaran: Rp {{ number_format($totalExpense, 0, ',', '.') }}</p>
         </div>
     </div>
+    @endif
 
     <!-- Transactions Table Card -->
     <div class="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-100">
