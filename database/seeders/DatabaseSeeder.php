@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use App\Models\Investor;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create Admin
+        User::create([
+            'name' => 'Admin Keuangan',
+            'email' => 'admin@alaskaki.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin'
+        ]);
+
+        // Create Investor User
+        $investorUser = User::create([
+            'name' => 'Bapak Investor',
+            'email' => 'investor@alaskaki.id',
+            'password' => Hash::make('password'),
+            'role' => 'investor'
+        ]);
+
         Investor::create([
+            'user_id' => $investorUser->id,
             'name' => 'Investor A',
             'share_percentage' => 30.00
         ]);

@@ -1,0 +1,2 @@
+  1. Admin (Email:  admin@alaskaki.id , Password:  password )
+  2. Investor (Email:  investor@alaskaki.id , Password:  password )
