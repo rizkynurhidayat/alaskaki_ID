@@ -6,7 +6,7 @@
 @section('header_subtitle', 'Ubah data transaksi pemasukan atau pengeluaran')
 
 @section('content')
-<div class="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+<div class="max-w-lg mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-100">
     <h3 class="text-xl font-bold text-slate-800 mb-6">Ubah Transaksi</h3>
 
     <form action="{{ route('transactions.update', $transaction) }}" method="POST" class="space-y-5">

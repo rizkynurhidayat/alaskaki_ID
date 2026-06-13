@@ -6,10 +6,10 @@
 @section('header_subtitle', 'Kelola daftar produk dan harga jasa cuci sepatu')
 
 @section('content')
-<div class="max-w-5xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-    <div class="flex items-center justify-between mb-8">
+<div class="max-w-5xl mx-auto bg-white p-4 sm:p-8 rounded-2xl shadow-sm border border-slate-100">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <h3 class="text-xl font-bold text-slate-800">Daftar Jasa Cuci Sepatu</h3>
-        <a href="{{ route('products.create') }}" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 shadow-sm shadow-blue-200 hover:shadow-md transition flex items-center gap-2 text-sm">
+        <a href="{{ route('products.create') }}" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-700 shadow-sm shadow-blue-200 hover:shadow-md transition flex items-center justify-center gap-2 text-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah Jasa / Produk
         </a>

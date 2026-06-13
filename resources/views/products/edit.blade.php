@@ -6,7 +6,7 @@
 @section('header_subtitle', 'Ubah detail nama jasa cuci sepatu atau harganya')
 
 @section('content')
-<div class="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+<div class="max-w-lg mx-auto bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-slate-100">
     <h3 class="text-xl font-bold text-slate-800 mb-6">Ubah Jasa / Produk</h3>
 
     <form action="{{ route('products.update', $product) }}" method="POST" class="space-y-5">

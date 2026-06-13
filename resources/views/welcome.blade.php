@@ -9,7 +9,7 @@
 <!-- Cards Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
     <!-- Card 1 -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-50 rounded-full group-hover:scale-110 transition-transform"></div>
         <div class="relative">
             <p class="text-sm font-medium text-slate-500 mb-1">Total Pemasukan</p>
@@ -19,7 +19,7 @@
 
     @if($user->role === 'admin')
     <!-- Card 2 -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
         <div class="absolute -right-6 -top-6 w-24 h-24 bg-red-50 rounded-full group-hover:scale-110 transition-transform"></div>
         <div class="relative">
             <p class="text-sm font-medium text-slate-500 mb-1">Total Pengeluaran</p>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Card 3 -->
-    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-lg relative overflow-hidden group text-white">
+    <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 sm:p-6 shadow-lg relative overflow-hidden group text-white">
         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/5 rounded-full group-hover:scale-110 transition-transform"></div>
         <div class="relative">
             <p class="text-sm font-medium text-slate-300 mb-1">Laba Bersih Bulan Ini</p>
@@ -40,7 +40,7 @@
     @endif
 
     <!-- Card 4 -->
-    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 shadow-lg shadow-indigo-200/50 relative overflow-hidden group text-white">
+    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-4 sm:p-6 shadow-lg shadow-indigo-200/50 relative overflow-hidden group text-white">
         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full group-hover:scale-110 transition-transform"></div>
         <div class="relative">
             <p class="text-sm font-medium text-indigo-100 mb-1">Dividen Investor ({{ $investorSharePercentage }}%)</p>
@@ -72,7 +72,7 @@
 <!-- Charts & Tables Grid -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Chart -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 lg:col-span-2">
+    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 lg:col-span-2">
         <h3 class="font-semibold text-slate-800 text-lg mb-6">Tren Laba (Data Tersimulasi)</h3>
         <div class="relative h-[300px] w-full">
             <canvas id="profitChart"></canvas>
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Recent Transactions -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col">
+    <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 flex flex-col">
         <h3 class="font-semibold text-slate-800 text-lg mb-6">Transaksi Terbaru</h3>
         <div class="space-y-4 flex-1">
             @forelse($recentTransactions as $transaction)
