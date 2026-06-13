@@ -26,6 +26,12 @@ class DashboardController extends Controller
 
         $totalIncome = $transactions->where('type', 'income')->sum('amount');
         $totalExpense = $transactions->where('type', 'expense')->sum('amount');
+        $totalHpp = $transactions->where('type', 'expense')->where('category', 'hpp')->sum('amount');
+        
+        // Laba Kotor = Pemasukan - HPP
+        $grossProfit = $totalIncome - $totalHpp;
+        
+        // Laba Bersih = Pemasukan - Pengeluaran (HPP + Operasional)
         $netProfit = $totalIncome - $totalExpense;
         
         $investorSharePercentage = 30; // Persentase default jika admin yang lihat
@@ -35,7 +41,8 @@ class DashboardController extends Controller
             $investorSharePercentage = $investor ? $investor->share_percentage : 0;
         }
 
-        $estimatedDividend = ($netProfit > 0) ? ($netProfit * ($investorSharePercentage / 100)) : 0;
+        // Dividen dihitung dari Laba Kotor
+        $estimatedDividend = ($grossProfit > 0) ? ($grossProfit * ($investorSharePercentage / 100)) : 0;
 
         // Hitung persentase kenaikan/penurunan dari minggu sebelumnya
         $startOfCurrentWeek = Carbon::now()->startOfWeek();
@@ -43,11 +50,19 @@ class DashboardController extends Controller
         $startOfPrevWeek = Carbon::now()->subWeek()->startOfWeek();
         $endOfPrevWeek = Carbon::now()->subWeek()->endOfWeek();
 
-        $currentWeekProfit = Transaction::whereBetween('transaction_date', [$startOfCurrentWeek, $endOfCurrentWeek])->where('type', 'income')->sum('amount') - Transaction::whereBetween('transaction_date', [$startOfCurrentWeek, $endOfCurrentWeek])->where('type', 'expense')->sum('amount');
-        $prevWeekProfit = Transaction::whereBetween('transaction_date', [$startOfPrevWeek, $endOfPrevWeek])->where('type', 'income')->sum('amount') - Transaction::whereBetween('transaction_date', [$startOfPrevWeek, $endOfPrevWeek])->where('type', 'expense')->sum('amount');
+        // Hitung laba kotor minggu berjalan
+        $currentWeekIncome = Transaction::whereBetween('transaction_date', [$startOfCurrentWeek, $endOfCurrentWeek])->where('type', 'income')->sum('amount');
+        $currentWeekHpp = Transaction::whereBetween('transaction_date', [$startOfCurrentWeek, $endOfCurrentWeek])->where('type', 'expense')->where('category', 'hpp')->sum('amount');
+        $currentWeekGrossProfit = $currentWeekIncome - $currentWeekHpp;
 
-        $currentWeekDividend = ($currentWeekProfit > 0) ? ($currentWeekProfit * ($investorSharePercentage / 100)) : 0;
-        $prevWeekDividend = ($prevWeekProfit > 0) ? ($prevWeekProfit * ($investorSharePercentage / 100)) : 0;
+        // Hitung laba kotor minggu lalu
+        $prevWeekIncome = Transaction::whereBetween('transaction_date', [$startOfPrevWeek, $endOfPrevWeek])->where('type', 'income')->sum('amount');
+        $prevWeekHpp = Transaction::whereBetween('transaction_date', [$startOfPrevWeek, $endOfPrevWeek])->where('type', 'expense')->where('category', 'hpp')->sum('amount');
+        $prevWeekGrossProfit = $prevWeekIncome - $prevWeekHpp;
+
+        // Dividen masing-masing minggu dihitung dari laba kotor
+        $currentWeekDividend = ($currentWeekGrossProfit > 0) ? ($currentWeekGrossProfit * ($investorSharePercentage / 100)) : 0;
+        $prevWeekDividend = ($prevWeekGrossProfit > 0) ? ($prevWeekGrossProfit * ($investorSharePercentage / 100)) : 0;
 
         if ($prevWeekDividend > 0) {
             $weeklyDividendChange = (($currentWeekDividend - $prevWeekDividend) / $prevWeekDividend) * 100;
@@ -62,7 +77,7 @@ class DashboardController extends Controller
             ->get();
 
         return view('welcome', compact(
-            'totalIncome', 'totalExpense', 'netProfit', 'estimatedDividend', 'recentTransactions', 'user', 'investorSharePercentage', 'weeklyDividendChange'
+            'totalIncome', 'totalExpense', 'totalHpp', 'grossProfit', 'netProfit', 'estimatedDividend', 'recentTransactions', 'user', 'investorSharePercentage', 'weeklyDividendChange'
         ));
     }
 }

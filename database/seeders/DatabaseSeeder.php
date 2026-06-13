@@ -38,9 +38,14 @@ class DatabaseSeeder extends Seeder
             'share_percentage' => 30.00
         ]);
 
-        Transaction::create(['type' => 'income', 'amount' => 100000000, 'transaction_date' => Carbon::now()->subDays(5), 'description' => 'Penjualan Produk A']);
-        Transaction::create(['type' => 'expense', 'amount' => 15000000, 'transaction_date' => Carbon::now()->subDays(4), 'description' => 'Gaji Karyawan']);
-        Transaction::create(['type' => 'expense', 'amount' => 5000000, 'transaction_date' => Carbon::now()->subDays(3), 'description' => 'Biaya Iklan']);
-        Transaction::create(['type' => 'expense', 'amount' => 40000000, 'transaction_date' => Carbon::now()->subDays(1), 'description' => 'Pembelian Material']);
+        // Seed Products / Services
+        \App\Models\Product::create(['name' => 'Deep Clean', 'price' => 50000]);
+        \App\Models\Product::create(['name' => 'Unyellowing', 'price' => 75000]);
+        \App\Models\Product::create(['name' => 'Repaint', 'price' => 120000]);
+
+        Transaction::create(['type' => 'income', 'amount' => 100000000, 'transaction_date' => Carbon::now()->subDays(5), 'description' => 'Penjualan Jasa Cuci Sepatu']);
+        Transaction::create(['type' => 'expense', 'amount' => 15000000, 'transaction_date' => Carbon::now()->subDays(4), 'description' => 'Gaji Karyawan', 'category' => 'operational']);
+        Transaction::create(['type' => 'expense', 'amount' => 5000000, 'transaction_date' => Carbon::now()->subDays(3), 'description' => 'Biaya Iklan', 'category' => 'operational']);
+        Transaction::create(['type' => 'expense', 'amount' => 40000000, 'transaction_date' => Carbon::now()->subDays(1), 'description' => 'Pembelian Material', 'category' => 'hpp']);
     }
 }

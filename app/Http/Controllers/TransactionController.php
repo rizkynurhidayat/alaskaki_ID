@@ -47,6 +47,7 @@ class TransactionController extends Controller
             'transaction_date' => 'required|date',
             'description' => 'required|string|max:255',
             'product_id' => 'nullable|exists:products,id',
+            'category' => 'nullable|required_if:type,expense|in:hpp,operational',
         ]);
 
         // Simpan data melalui Eloquent Model
@@ -56,6 +57,7 @@ class TransactionController extends Controller
             'transaction_date' => $request->transaction_date,
             'description' => $request->description,
             'product_id' => $request->type === 'income' ? $request->product_id : null,
+            'category' => $request->type === 'expense' ? $request->category : null,
         ]);
 
         // Arahkan kembali ke menu transaksi
@@ -86,6 +88,7 @@ class TransactionController extends Controller
             'transaction_date' => 'required|date',
             'description' => 'required|string|max:255',
             'product_id' => 'nullable|exists:products,id',
+            'category' => 'nullable|required_if:type,expense|in:hpp,operational',
         ]);
 
         $transaction->update([
@@ -94,6 +97,7 @@ class TransactionController extends Controller
             'transaction_date' => $request->transaction_date,
             'description' => $request->description,
             'product_id' => $request->type === 'income' ? $request->product_id : null,
+            'category' => $request->type === 'expense' ? $request->category : null,
         ]);
 
         return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diperbarui.');

@@ -156,6 +156,7 @@ test('admin users can update a transaction', function () {
 
     $response = $this->actingAs($user)->put(route('transactions.update', $transaction), [
         'type' => 'expense',
+        'category' => 'operational',
         'amount' => 35000,
         'transaction_date' => '2026-06-14',
         'description' => 'Updated Dummy Text',

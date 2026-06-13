@@ -36,11 +36,17 @@
                                 <span class="block text-xs text-blue-500 font-normal mt-0.5">Produk: {{ $trx->product->name }}</span>
                             @endif
                         </td>
-                        <td class="p-4 text-center">
+                        <td class="p-4 text-center whitespace-nowrap">
                             @if($trx->type === 'income')
                                 <span class="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Pemasukan</span>
                             @else
-                                <span class="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">Pengeluaran</span>
+                                @if($trx->category === 'hpp')
+                                    <span class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">Pengeluaran (HPP)</span>
+                                @elseif($trx->category === 'operational')
+                                    <span class="inline-block px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">Pengeluaran (Ops)</span>
+                                @else
+                                    <span class="inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">Pengeluaran</span>
+                                @endif
                             @endif
                         </td>
                         <td class="p-4 text-right font-semibold {{ $trx->type === 'income' ? 'text-green-600' : 'text-red-600' }}">

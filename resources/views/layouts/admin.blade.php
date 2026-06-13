@@ -17,7 +17,7 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300">
         <div class="h-20 flex items-center justify-center border-b border-slate-800">
-            <h1 class="text-2xl font-bold tracking-wider bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Profit<span class="font-light text-white">Share</span></h1>
+            <h1 class="text-2xl font-bold tracking-wider text-blue-500">Alas<span class="font-light text-white">kakii</span></h1>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-2">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors {{ request()->routeIs('dashboard') ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">

@@ -40,6 +40,18 @@
             @enderror
         </div>
 
+        <!-- Kategori Pengeluaran (Hanya Muncul jika Pengeluaran) -->
+        <div id="category-select-container">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Kategori Pengeluaran</label>
+            <select name="category" class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition">
+                <option value="hpp" {{ old('category') === 'hpp' ? 'selected' : '' }}>HPP / Belanja Bahan</option>
+                <option value="operational" {{ old('category') === 'operational' ? 'selected' : '' }}>Operasional</option>
+            </select>
+            @error('category')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <!-- Nominal -->
         <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Nominal (Rp)</label>
@@ -84,14 +96,20 @@
         const typeSelect = document.querySelector('select[name="type"]');
         const productContainer = document.getElementById('product-select-container');
         const productSelect = document.getElementById('product_id');
+        const categoryContainer = document.getElementById('category-select-container');
+        const categorySelect = document.querySelector('select[name="category"]');
         const amountInput = document.querySelector('input[name="amount"]');
         const descriptionInput = document.querySelector('textarea[name="description"]');
 
         function handleTypeChange() {
             if (typeSelect.value === 'income') {
                 productContainer.style.display = 'block';
+                categoryContainer.style.display = 'none';
+                categorySelect.removeAttribute('required');
             } else {
                 productContainer.style.display = 'none';
+                categoryContainer.style.display = 'block';
+                categorySelect.setAttribute('required', 'required');
                 productSelect.value = '';
                 amountInput.readOnly = false;
             }

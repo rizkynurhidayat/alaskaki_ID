@@ -24,6 +24,7 @@
         <div class="relative">
             <p class="text-sm font-medium text-slate-500 mb-1">Total Pengeluaran</p>
             <h3 class="text-2xl font-bold text-slate-800">Rp {{ number_format($totalExpense, 0, ',', '.') }}</h3>
+            <p class="text-xs text-slate-400 mt-1">HPP: Rp {{ number_format($totalHpp, 0, ',', '.') }} | Ops: Rp {{ number_format($totalExpense - $totalHpp, 0, ',', '.') }}</p>
         </div>
     </div>
 
@@ -33,6 +34,7 @@
         <div class="relative">
             <p class="text-sm font-medium text-slate-300 mb-1">Laba Bersih Bulan Ini</p>
             <h3 class="text-2xl font-bold text-white">Rp {{ number_format($netProfit, 0, ',', '.') }}</h3>
+            <p class="text-xs text-slate-400 mt-1">Laba Kotor: Rp {{ number_format($grossProfit, 0, ',', '.') }}</p>
         </div>
     </div>
     @endif
@@ -114,10 +116,14 @@
         new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Laba Bersih', 'Total Pengeluaran'],
+                labels: ['Laba Bersih', 'HPP / Belanja Bahan', 'Operasional'],
                 datasets: [{
-                    data: [{{ $netProfit }}, {{ $totalExpense }}],
-                    backgroundColor: ['#10b981', '#f43f5e'], // Hijau dan Merah
+                    data: [
+                        {{ max(0, $netProfit) }}, 
+                        {{ $totalHpp }}, 
+                        {{ $totalExpense - $totalHpp }}
+                    ],
+                    backgroundColor: ['#10b981', '#f43f5e', '#f97316'], // Hijau, Merah, Orange
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
